@@ -1,12 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View, Image } from 'react-native';
+import HabitLogo from './assets/images/habitHunterLogo500.png';
+const image = {
+  uri: 'https://miro.medium.com/max/3668/1*6G4hXpEpdF4y1WcHwUp-2A.jpeg',
+};
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <StatusBar hidden={true} />
+      <ImageBackground source={image} style={styles.image}>
+        <Image style={styles.logo} source={HabitLogo} />
+      </ImageBackground>
     </View>
   );
 }
@@ -14,8 +20,13 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: 'column',
   },
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logo: { marginBottom: 125 },
 });
