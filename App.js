@@ -2,20 +2,21 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { ImageBackground, StyleSheet, Text, View, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import HabitLogo from './assets/images/habitHunterLogo500_2.png';
-const image = {
-  uri: 'https://miro.medium.com/max/3668/1*6G4hXpEpdF4y1WcHwUp-2A.jpeg',
-};
-
+import HabitLogo from './assets/images/habitHunterLogo500.png';
+import Forest from './assets/images/habithuntersplashimage.jpeg';
 export default function LoginScreen() {
   return (
     <View style={styles.container}>
       <StatusBar hidden={true} />
-      <ImageBackground source={image} style={styles.image}>
+      <ImageBackground
+        accessibilityLabel="Forest with a path"
+        source={Forest}
+        style={styles.image}
+      >
         <LinearGradient
           // Background Linear Gradient
-          start={[0.5, 0.2]}
-          colors={['rgba(0,0,0,0.80)', 'transparent']}
+          start={[0.5, 0.1]}
+          colors={['rgba(0,0,0,0.775)', 'transparent']}
           style={{
             position: 'absolute',
             left: 0,
@@ -24,7 +25,11 @@ export default function LoginScreen() {
             height: 600,
           }}
         />
-        <Image style={styles.logo} source={HabitLogo} />
+        <Image
+          accessibilityLabel="Habit Hunter"
+          style={styles.logo}
+          source={HabitLogo}
+        />
       </ImageBackground>
     </View>
   );
