@@ -1,88 +1,71 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import {
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Dimensions,
-} from 'react-native';
-import Animated from 'react-native-reanimated';
-import { TapGestureHandler, State } from 'react-native-gesture-handler';
-import { LinearGradient } from 'expo-linear-gradient';
-import HabitLogo from './assets/images/habitHunterLogo500.png';
-import Forest from './assets/images/habithuntersplashimage.jpeg';
+import 'react-native-gesture-handler';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { AntDesign } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+// Screens
+import HomeScreen from './screens/HomeScreen.js';
+import BuddiesScreen from './screens/BuddiesScreen.js';
+import AccountScreen from './screens/AccountScreen.js';
 
-const { width, height } = Dimensions.get('window');
+const Stack = createStackNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
-export default function LoginScreen() {
+export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-        justifyContent: 'flex-end',
-      }}
-    >
-      <StatusBar hidden={true} />
-      <View style={{ ...StyleSheet.absoluteFill }}>
-        <ImageBackground source={Forest} style={styles.image}>
-          <LinearGradient
-            // Background Linear Gradient
-            start={[0.5, 0.22]}
-            colors={['rgba(0,0,0,0.70)', 'transparent']}
-            style={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              top: 0,
-              height: 400,
-            }}
-          />
-          <Image
-            accessibilityLabel="Habit Hunter"
-            style={styles.logo}
-            source={HabitLogo}
-          />
-        </ImageBackground>
-      </View>
-      <View style={{ height: height / 3, justifyContent: 'center' }}>
-        <View accessibilityLabel="Login" style={styles.button}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>LOGIN</Text>
-        </View>
-        <View
-          accessibilityLabel="Login with facebook"
-          style={{ ...styles.button, backgroundColor: '#4267b2' }}
-        >
-          <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>
-            LOGIN WITH FACEBOOK
-          </Text>
-        </View>
-      </View>
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator
+        inactiveColor="#ebedf1"
+        barStyle={{
+          backgroundColor: '#3f51b5',
+          height: 100,
+          flex: 0,
+          borderTopEndRadius: 0,
+          borderTopLeftRadius: 150,
+          justifyContent: 'center',
+          paddingHorizontal: 75,
+          paddingVertical: 17.5,
+        }}
+        initialRouteName="Habits"
+        activeColor="#FFFF"
+      >
+        <Tab.Screen
+          name="Habits"
+          component={HomeScreen}
+          options={{
+            tabBarLabel: 'Habits',
+            tabBarAccessibilityLabel: 'Habits',
+            tabBarIcon: ({ color }) => (
+              <Entypo name="compass" size={24} color="black" />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Buddies"
+          component={BuddiesScreen}
+          options={{
+            tabBarLabel: 'Buddies',
+            tabBarAccessibilityLabel: 'buddies',
+            tabBarIcon: ({ color }) => (
+              <AntDesign name="aliwangwang-o1" size={24} color="black" />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Account"
+          component={AccountScreen}
+          options={{
+            tabBarLabel: 'Account',
+            tabBarAccessibilityLabel: 'account',
+            tabBarIcon: ({ color }) => (
+              <FontAwesome5 name="user-circle" size={24} color="black" />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  image: {
-    flex: 1,
-    resizeMode: 'cover',
-    alignItems: 'center',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    backgroundColor: 'white',
-    height: 70,
-    marginHorizontal: 20,
-    borderRadius: 35,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 5,
-  },
-  logo: { marginTop: -70 },
-});
