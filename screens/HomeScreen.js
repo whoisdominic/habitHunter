@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   heroImg: {
     borderRadius: 15,
     maxWidth: 400,
-    marginVertical: 5,
+    marginVertical: 7.5,
   },
   backImage: {
     flex: 1,

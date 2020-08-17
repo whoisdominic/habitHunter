@@ -23,6 +23,7 @@ export default function App() {
       <ImageBackground source={BackImg} style={styles.backImage}>
         <Tab.Navigator
           activeColor="#FFF"
+          inactiveColor="#24ab89"
           barStyle={{
             height: 80,
             flex: 0,
