@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
+import { ImageBackground, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
@@ -10,62 +11,73 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import HomeScreen from './screens/HomeScreen.js';
 import BuddiesScreen from './screens/BuddiesScreen.js';
 import AccountScreen from './screens/AccountScreen.js';
-
+// Images
+import BackImg from './assets/images/appbackgroundfill.png';
+// Constants
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        inactiveColor="#ebedf1"
-        barStyle={{
-          backgroundColor: '#3f51b5',
-          height: 100,
-          flex: 0,
-          borderTopEndRadius: 0,
-          borderTopLeftRadius: 150,
-          justifyContent: 'center',
-          paddingHorizontal: 75,
-          paddingVertical: 17.5,
-        }}
-        initialRouteName="Habits"
-        activeColor="#FFFF"
-      >
-        <Tab.Screen
-          name="Habits"
-          component={HomeScreen}
-          options={{
-            tabBarLabel: 'Habits',
-            tabBarAccessibilityLabel: 'Habits',
-            tabBarIcon: ({ color }) => (
-              <Entypo name="compass" size={24} color="black" />
-            ),
+    <ImageBackground source={BackImg} style={styles.backImage}>
+      <NavigationContainer>
+        <Tab.Navigator
+          inactiveColor="#ebedf1"
+          barStyle={{
+            backgroundColor: '#24ab89',
+            height: 80,
+            flex: 0,
+            borderTopLeftRadius: 1000,
+            borderTopRightRadius: 1000,
+            justifyContent: 'center',
+            paddingHorizontal: 75,
+            paddingTop: 15,
           }}
-        />
-        <Tab.Screen
-          name="Buddies"
-          component={BuddiesScreen}
-          options={{
-            tabBarLabel: 'Buddies',
-            tabBarAccessibilityLabel: 'buddies',
-            tabBarIcon: ({ color }) => (
-              <AntDesign name="aliwangwang-o1" size={24} color="black" />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Account"
-          component={AccountScreen}
-          options={{
-            tabBarLabel: 'Account',
-            tabBarAccessibilityLabel: 'account',
-            tabBarIcon: ({ color }) => (
-              <FontAwesome5 name="user-circle" size={24} color="black" />
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+          initialRouteName="Habits"
+        >
+          <Tab.Screen
+            name="Habits"
+            component={HomeScreen}
+            options={{
+              tabBarLabel: 'Habits',
+              tabBarAccessibilityLabel: 'Habits',
+              tabBarIcon: ({ color }) => (
+                <Entypo name="compass" size={24} color="black" />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Buddies"
+            component={BuddiesScreen}
+            options={{
+              tabBarLabel: 'Buddies',
+              tabBarAccessibilityLabel: 'buddies',
+              tabBarIcon: ({ color }) => (
+                <AntDesign name="aliwangwang-o1" size={24} color="black" />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Account"
+            component={AccountScreen}
+            options={{
+              tabBarLabel: 'Account',
+              tabBarAccessibilityLabel: 'account',
+              tabBarIcon: ({ color }) => (
+                <FontAwesome5 name="user-circle" size={24} color="black" />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </ImageBackground>
   );
 }
+
+const styles = StyleSheet.create({
+  backImage: {
+    flex: 1,
+    resizeMode: 'repeat',
+    justifyContent: 'center',
+  },
+});
