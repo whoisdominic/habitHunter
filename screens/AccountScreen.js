@@ -1,59 +1,32 @@
+import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
-  Image,
-  SafeAreaView,
-  ScrollView,
   ImageBackground,
-  Dimensions,
+  SafeAreaView,
 } from 'react-native';
-import MonthlyImg from '../assets/images/habithuntermonthly.png';
-import WeeklyImg from '../assets/images/habithunterweekly.png';
-import DailyImg from '../assets/images/habithunterdaily.png';
-import BackImg from '../assets/images/habithunterback.png';
-import { StatusBar } from 'expo-status-bar';
+import BackImg from '../assets/images/habithunterAccount.png';
 
-const { height, width } = Dimensions.get('window');
-
-export default function HomeScreen({ navigation }) {
+export default function Buddiescreen({ navigation }) {
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: 'white',
         justifyContent: 'flex-end',
       }}
     >
+      <StatusBar hidden={true} />
       <View style={{ ...StyleSheet.absoluteFill }}>
-        <View style={styles.container}>
-          <ImageBackground source={BackImg} style={styles.backImage}>
-            <StatusBar hidden={true} />
-            <SafeAreaView />
-            <ScrollView centerContent={true}></ScrollView>
-            <View style={styles.infoCont}>
-              <Text>WTF</Text>
-            </View>
-          </ImageBackground>
-        </View>
+        <ImageBackground source={BackImg} style={styles.backImage}>
+          <SafeAreaView />
+        </ImageBackground>
       </View>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
-  backImage: {
-    flex: 1,
-    resizeMode: 'cover',
-    alignItems: 'center',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#212121',
-  },
   image: {
     flex: 1,
     resizeMode: 'cover',
@@ -65,19 +38,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#212121',
   },
-  heroImg: {
-    borderRadius: 15,
-    maxWidth: 400,
-    marginVertical: 5,
-  },
   backImage: {
     flex: 1,
+    resizeMode: 'cover',
     justifyContent: 'center',
-  },
-  infoCont: {
-    flex: 2,
-    width: width,
-    height: height,
-    backgroundColor: '#212121',
   },
 });

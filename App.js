@@ -19,12 +19,11 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function App() {
   return (
-    <ImageBackground source={BackImg} style={styles.backImage}>
-      <NavigationContainer>
+    <NavigationContainer>
+      <ImageBackground source={BackImg} style={styles.backImage}>
         <Tab.Navigator
-          inactiveColor="#ebedf1"
+          activeColor="#FFF"
           barStyle={{
-            backgroundColor: '#24ab89',
             height: 80,
             flex: 0,
             borderTopLeftRadius: 1000,
@@ -32,8 +31,8 @@ export default function App() {
             justifyContent: 'center',
             paddingHorizontal: 75,
             paddingTop: 15,
+            backgroundColor: '#24ab89',
           }}
-          initialRouteName="Habits"
         >
           <Tab.Screen
             name="Habits"
@@ -69,8 +68,8 @@ export default function App() {
             }}
           />
         </Tab.Navigator>
-      </NavigationContainer>
-    </ImageBackground>
+      </ImageBackground>
+    </NavigationContainer>
   );
 }
 

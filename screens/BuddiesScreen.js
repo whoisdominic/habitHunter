@@ -7,14 +7,23 @@ import {
   ImageBackground,
   SafeAreaView,
 } from 'react-native';
-import BackImg from '../assets/images/habithunterback.png';
+import BackImg from '../assets/images/habithunterbackBuddies.png';
 
 export default function Buddiescreen({ navigation }) {
   return (
-    <ImageBackground source={BackImg} style={styles.backImage}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'flex-end',
+      }}
+    >
       <StatusBar hidden={true} />
-      <SafeAreaView />
-    </ImageBackground>
+      <View style={{ ...StyleSheet.absoluteFill }}>
+        <ImageBackground source={BackImg} style={styles.backImage}>
+          <SafeAreaView />
+        </ImageBackground>
+      </View>
+    </View>
   );
 }
 const styles = StyleSheet.create({
