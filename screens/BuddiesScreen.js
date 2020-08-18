@@ -1,6 +1,7 @@
+// Expo
 import { StatusBar } from 'expo-status-bar';
 import * as Contacts from 'expo-contacts';
-import { LinearGradient } from 'expo-linear-gradient';
+// React +
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
@@ -13,8 +14,12 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+// Other Libraries
+// Images
 import BackImg from '../assets/images/habithunterbackBuddies.png';
-
+// Algorithms
+import ContactSort from '../algorithms/ContactSort.js';
+// Constants
 const { width, height } = Dimensions.get('window');
 
 export default function Buddiescreen({ navigation }) {
@@ -36,6 +41,9 @@ export default function Buddiescreen({ navigation }) {
         _____________________
         _____________________
         */
+        // console.log(contacts);
+        let unsortedContacts = contacts;
+        let sortedContacts = ContactSort(contacts);
         setContactList(contacts);
       }
     }
