@@ -30,6 +30,7 @@ export default function Buddiescreen({ navigation }) {
     if (status === 'granted') {
       const { data } = await Contacts.getContactsAsync({
         fields: [Contacts.Fields.FirstName, Contacts.Fields.LastName],
+        sort: Contacts.SortTypes.FirstName,
       });
 
       if (data.length > 0) {
@@ -41,9 +42,7 @@ export default function Buddiescreen({ navigation }) {
         _____________________
         _____________________
         */
-        // console.log(contacts);
-        let unsortedContacts = contacts;
-        let sortedContacts = ContactSort(contacts);
+        console.log(contacts);
         setContactList(contacts);
       }
     }
