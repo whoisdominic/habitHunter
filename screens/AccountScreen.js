@@ -34,7 +34,7 @@ export default function Buddiescreen({ navigation }) {
           <TouchableOpacity activeOpacity={0.5}>
             <View style={styles.sectionMed}>
               <View style={styles.center}>
-                <Text>Progress</Text>
+                <Text>User Stats</Text>
               </View>
             </View>
           </TouchableOpacity>
