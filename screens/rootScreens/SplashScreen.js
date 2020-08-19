@@ -21,7 +21,7 @@ import {
 } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import HabitLogo from '../../assets/images/habitHunterLogo500.png';
-import Forest from '../../assets/images/habithuntersplashimage.jpeg';
+import Forest from '../../assets/images/habithuntersplash.png';
 
 const { width, height } = Dimensions.get('window');
 const height_logo = height * 0.5;
@@ -32,18 +32,6 @@ export default function LandingScreen({ navigation }) {
     <View style={{ ...StyleSheet.absoluteFill }}>
       <StatusBar hidden={true} />
       <ImageBackground source={Forest} style={styles.image}>
-        <LinearGradient
-          // Background Linear Gradient
-          start={[0.5, 0.22]}
-          colors={['rgba(0,0,0,0.70)', 'transparent']}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            height: 400,
-          }}
-        />
         <View style={styles.header}>
           <Animatable.Image
             animation="bounceIn"
@@ -53,29 +41,21 @@ export default function LandingScreen({ navigation }) {
             source={HabitLogo}
             accessibilityLabel="Habit Hunter Logo"
           />
-        </View>
-        <Animatable.View animation="fadeInUpBig" style={styles.footer}>
-          <Text style={styles.title}>Stay connected with everyone!</Text>
-          <Text style={styles.text}>Sign in with account</Text>
-          <View style={styles.button}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('SignInScreen')}
+          <TouchableOpacity onPress={() => navigation.navigate('SignInScreen')}>
+            <LinearGradient
+              colors={['#08d4c4', '#01ab9d']}
+              style={styles.signIn}
             >
-              <LinearGradient
-                colors={['#08d4c4', '#01ab9d']}
-                style={styles.signIn}
-              >
-                <Text style={styles.textSign}>Get Started</Text>
-                <AntDesign
-                  style={{ marginLeft: 4, marginRight: -6 }}
-                  name="rightcircleo"
-                  size={16}
-                  color="white"
-                />
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
-        </Animatable.View>
+              <Text style={styles.textSign}>Get Started</Text>
+              <AntDesign
+                style={{ marginLeft: 10, marginRight: -6, marginTop: 2.5 }}
+                name="rightcircleo"
+                size={20}
+                color="white"
+              />
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
       </ImageBackground>
     </View>
   );
@@ -83,7 +63,7 @@ export default function LandingScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   image: {
-    flex: 1,
+    flex: 2,
     resizeMode: 'cover',
     alignItems: 'center',
   },
@@ -101,14 +81,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 5,
   },
-  logo: { marginTop: -70 },
   container: {
     flex: 1,
     backgroundColor: '#696969',
   },
   header: {
     flex: 2,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   footer: {
@@ -133,36 +111,16 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   signIn: {
-    width: 150,
-    height: 40,
+    width: 250,
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
     flexDirection: 'row',
   },
   textSign: {
+    fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
   },
 });
-
-// export default function SplashScreen({ navigation }) {
-//   return (
-//     <View style={styles.container}>
-//       <View style={styles.header}>
-//         <Animatable.Image
-//           animation="bounceIn"
-//           duration={1500}
-//           style={styles.logo}
-//           resizeMode="stretch"
-//           source={require('../../assets/images/habitHunterLogo500.png')}
-//         />
-//       </View>
-
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-
-// });
