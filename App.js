@@ -11,65 +11,73 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import HomeScreen from './screens/HomeScreen.js';
 import BuddiesScreen from './screens/BuddiesScreen.js';
 import AccountScreen from './screens/AccountScreen.js';
+// Auth/Root Stack
+import RootStackScreen from './screens/RootStackScreen.js';
 // Images
 import BackImg from './assets/images/appbackgroundfill.png';
 // Constants
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
+const authSetup = false;
+
 export default function App() {
   return (
     <NavigationContainer>
-      <ImageBackground source={BackImg} style={styles.backImage}>
-        <Tab.Navigator
-          activeColor="#FFF"
-          inactiveColor="#24ab89"
-          barStyle={{
-            height: 80,
-            flex: 0,
-            borderTopLeftRadius: 1000,
-            borderTopRightRadius: 1000,
-            justifyContent: 'center',
-            paddingHorizontal: 75,
-            paddingTop: 15,
-            backgroundColor: '#24ab89',
-          }}
-        >
-          <Tab.Screen
-            name="Habits"
-            component={HomeScreen}
-            options={{
-              tabBarLabel: 'Habits',
-              tabBarAccessibilityLabel: 'Habits',
-              tabBarIcon: ({ color }) => (
-                <Entypo name="compass" size={24} color="black" />
-              ),
+      {authSetup ? (
+        <ImageBackground source={BackImg} style={styles.backImage}>
+          <Tab.Navigator
+            activeColor="#FFF"
+            inactiveColor="#24ab89"
+            barStyle={{
+              height: 80,
+              flex: 0,
+              borderTopLeftRadius: 1000,
+              borderTopRightRadius: 1000,
+              justifyContent: 'center',
+              paddingHorizontal: 75,
+              paddingTop: 15,
+              backgroundColor: '#24ab89',
             }}
-          />
-          <Tab.Screen
-            name="Buddies"
-            component={BuddiesScreen}
-            options={{
-              tabBarLabel: 'Buddies',
-              tabBarAccessibilityLabel: 'buddies',
-              tabBarIcon: ({ color }) => (
-                <AntDesign name="aliwangwang-o1" size={24} color="black" />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Account"
-            component={AccountScreen}
-            options={{
-              tabBarLabel: 'Account',
-              tabBarAccessibilityLabel: 'account',
-              tabBarIcon: ({ color }) => (
-                <FontAwesome5 name="user-circle" size={24} color="black" />
-              ),
-            }}
-          />
-        </Tab.Navigator>
-      </ImageBackground>
+          >
+            <Tab.Screen
+              name="Habits"
+              component={HomeScreen}
+              options={{
+                tabBarLabel: 'Habits',
+                tabBarAccessibilityLabel: 'Habits',
+                tabBarIcon: ({ color }) => (
+                  <Entypo name="compass" size={24} color="black" />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Buddies"
+              component={BuddiesScreen}
+              options={{
+                tabBarLabel: 'Buddies',
+                tabBarAccessibilityLabel: 'buddies',
+                tabBarIcon: ({ color }) => (
+                  <AntDesign name="aliwangwang-o1" size={24} color="black" />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Account"
+              component={AccountScreen}
+              options={{
+                tabBarLabel: 'Account',
+                tabBarAccessibilityLabel: 'account',
+                tabBarIcon: ({ color }) => (
+                  <FontAwesome5 name="user-circle" size={24} color="black" />
+                ),
+              }}
+            />
+          </Tab.Navigator>
+        </ImageBackground>
+      ) : (
+        <RootStackScreen />
+      )}
     </NavigationContainer>
   );
 }
