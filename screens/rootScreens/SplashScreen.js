@@ -1,33 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   ImageBackground,
   StyleSheet,
   Text,
   View,
-  Image,
   Dimensions,
-  Button,
-  Alert,
   TouchableOpacity,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
-import Animated, { Easing } from 'react-native-reanimated';
-import {
-  TapGestureHandler,
-  State,
-  RectButton,
-} from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
-import HabitLogo from '../../assets/images/habitHunterLogo500.png';
+import HabitLogo from '../../assets/images/habitHunterLogo2.png';
 import Forest from '../../assets/images/habithuntersplash.png';
 
 const { width, height } = Dimensions.get('window');
 const height_logo = height * 0.5;
 
 export default function LandingScreen({ navigation }) {
-  const [buttonOpaticy, setButtonOpacity] = useState(1);
   return (
     <View style={{ ...StyleSheet.absoluteFill }}>
       <StatusBar hidden={true} />
@@ -41,7 +31,10 @@ export default function LandingScreen({ navigation }) {
             source={HabitLogo}
             accessibilityLabel="Habit Hunter Logo"
           />
-          <TouchableOpacity onPress={() => navigation.navigate('SignInScreen')}>
+          <TouchableOpacity
+            activeOpacity={0.35}
+            onPress={() => navigation.navigate('SignInScreen')}
+          >
             <LinearGradient
               colors={['#08d4c4', '#01ab9d']}
               style={styles.signIn}

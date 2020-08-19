@@ -18,6 +18,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import { set } from 'react-native-reanimated';
+import { Formik } from 'formik';
+// Images
 import BackGraphic from '../../assets/habithunterauth.png';
 import WelcomeImage from '../../assets/images/habithunterWelcome.png';
 
