@@ -63,12 +63,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     alignItems: 'center',
   },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#212121',
-  },
   heroImg: {
     borderRadius: 15,
     maxWidth: 400,
