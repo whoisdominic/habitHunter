@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   Dimensions,
   Image,
@@ -17,15 +16,18 @@ import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable";
-import { set } from "react-native-reanimated";
 import BackGraphic from "../../assets/habithunterauth.png";
 import RegisterImage from "../../assets/images/habithunterregister.png";
+// validators
+import * as EmailValidator from "email-validator";
+import Phone from "phone";
 import Axios from "axios";
 
-export default function SignInScreen({ navigation }) {
+export default function SignUpScreen({ navigation }) {
   const [data, setData] = useState({
     email: "",
     password: "",
+    passwordCheck: "",
     phoneNumber: "",
     check_emailInputChange: false,
     check_phoneInputChange: false,
@@ -69,6 +71,12 @@ export default function SignInScreen({ navigation }) {
       password: val,
     });
   };
+  const handlePasswordCheckChange = (val) => {
+    setData({
+      ...data,
+      passwordCheck: val,
+    });
+  };
   const updateSecureTextEntry = () => {
     setData({
       ...data,
@@ -83,17 +91,34 @@ export default function SignInScreen({ navigation }) {
   };
 
   const handleSubmit = async (event) => {
-    // log the state
-    console.log("form data", data);
-    // send form state to back end
-
-    // Send to login Sceen
-    try {
-      // Axios.post("localhost:8000/users/signup")
-      // navigation.navigate("SignInScreen");
-    } catch (error) {
-      console.log(error);
-      setError(error);
+    setError(null);
+    const emailVal = await EmailValidator.validate(data.email);
+    const phoneVal = await Phone(data.phoneNumber);
+    console.log(phoneVal);
+    console.log("form data pre", data);
+    if (data.password !== data.passwordCheck) {
+      setError("Paswords do not match");
+    } else if (!emailVal) {
+      setError("Not a valid email address");
+    } else if (!phoneVal[0]) {
+      setError("Not a valid phone number");
+    } else {
+      try {
+        const request = await Axios({
+          method: "post",
+          url: "http://localhost:8000/users/signup",
+          data: {
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            password: data.password,
+            passwordCheck: data.passwordCheck,
+          },
+        });
+        navigation.navigate("SignInScreen");
+      } catch (error) {
+        console.log(error);
+        setError(error);
+      }
     }
   };
 
@@ -184,7 +209,7 @@ export default function SignInScreen({ navigation }) {
               autoCapitalize="none"
               placeholder="Password"
               style={styles.textInput}
-              onChangeText={(val) => handlePasswordChange(val)}
+              onChangeText={(val) => handlePasswordCheckChange(val)}
             />
             <TouchableOpacity onPress={updateConfirmSecureTextEntry}>
               {data.confirm_secureTextEntry ? (
