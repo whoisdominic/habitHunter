@@ -18,48 +18,30 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable";
 import { set } from "react-native-reanimated";
+import { Formik } from "formik";
+// Images
 import BackGraphic from "../../assets/habithunterauth.png";
-import RegisterImage from "../../assets/images/habithunterregister.png";
-import Axios from "axios";
+import WelcomeImage from "../../assets/images/habithunterWelcome.png";
 
 export default function SignInScreen({ navigation }) {
   const [data, setData] = useState({
     email: "",
     password: "",
-    phoneNumber: "",
-    check_emailInputChange: false,
-    check_phoneInputChange: false,
+    check_textInputChange: false,
     secureTextEntry: true,
-    confirm_secureTextEntry: true,
   });
-  const [error, setError] = useState(null);
-  const emailInputChange = (val) => {
+  const textInputChange = (val) => {
     if (val.length !== 0) {
       setData({
         ...data,
         email: val,
-        check_emailInputChange: true,
+        check_textInputChange: true,
       });
     } else {
       setData({
         ...data,
         email: val,
-        check_emailInputChange: false,
-      });
-    }
-  };
-  const phoneInputChange = (val) => {
-    if (val.length >= 10) {
-      setData({
-        ...data,
-        phoneNumber: val,
-        check_phoneInputChange: true,
-      });
-    } else {
-      setData({
-        ...data,
-        phoneNumber: val,
-        check_phoneInputChange: false,
+        check_textInputChange: false,
       });
     }
   };
@@ -75,35 +57,14 @@ export default function SignInScreen({ navigation }) {
       secureTextEntry: !data.secureTextEntry,
     });
   };
-  const updateConfirmSecureTextEntry = () => {
-    setData({
-      ...data,
-      confirm_secureTextEntry: !data.confirm_secureTextEntry,
-    });
-  };
-
-  const handleSubmit = async (event) => {
-    // log the state
-    console.log("form data", data);
-    // send form state to back end
-
-    // Send to login Sceen
-    try {
-      // Axios.post("localhost:8000/users/signup")
-      // navigation.navigate("SignInScreen");
-    } catch (error) {
-      console.log(error);
-      setError(error);
-    }
-  };
 
   return (
-    <View style={{ ...StyleSheet.absoluteFill }}>
+    <View style={styles.container}>
       <ImageBackground source={BackGraphic} style={styles.image}>
         <SafeAreaView />
         <StatusBar backgroundColor="#009387" barStyle="light-content" />
         <View style={styles.header}>
-          <Image source={RegisterImage} style={styles.heroImg} />
+          <Image source={WelcomeImage} style={styles.heroImg} />
         </View>
         <Animatable.View animation="fadeInUpBig" style={styles.footer}>
           <Text style={styles.text_footer}>Email</Text>
@@ -113,27 +74,9 @@ export default function SignInScreen({ navigation }) {
               autoCapitalize="none"
               placeholder="Your Email"
               style={styles.textInput}
-              onChangeText={(val) => emailInputChange(val)}
+              onChangeText={(val) => textInputChange(val)}
             />
-            {data.check_emailInputChange ? (
-              <Animatable.View animation="bounceIn">
-                <Feather name="check-circle" size={24} color="green" />
-              </Animatable.View>
-            ) : null}
-          </View>
-
-          <Text style={[{ marginTop: 20 }, styles.text_footer]}>
-            Phone Number
-          </Text>
-          <View style={styles.action}>
-            <FontAwesome name="user-o" size={24} color="black" />
-            <TextInput
-              autoCapitalize="none"
-              placeholder="Phone Number"
-              style={styles.textInput}
-              onChangeText={(val) => phoneInputChange(val)}
-            />
-            {data.check_phoneInputChange ? (
+            {data.check_textInputChange ? (
               <Animatable.View animation="bounceIn">
                 <Feather name="check-circle" size={24} color="green" />
               </Animatable.View>
@@ -151,7 +94,7 @@ export default function SignInScreen({ navigation }) {
             Password
           </Text>
           <View style={styles.action}>
-            <Feather name="lock" size={24} color="#05375a" />
+            <Feather name="lock" size={24} color="black" />
             <TextInput
               secureTextEntry={data.secureTextEntry ? true : false}
               autoCapitalize="none"
@@ -167,51 +110,18 @@ export default function SignInScreen({ navigation }) {
               )}
             </TouchableOpacity>
           </View>
-          <Text
-            style={[
-              styles.text_footer,
-              {
-                marginTop: 35,
-              },
-            ]}
-          >
-            Confirm Password
-          </Text>
-          <View style={styles.action}>
-            <Feather name="lock" size={24} color="#05375a" />
-            <TextInput
-              secureTextEntry={data.confirm_secureTextEntry ? true : false}
-              autoCapitalize="none"
-              placeholder="Password"
-              style={styles.textInput}
-              onChangeText={(val) => handlePasswordChange(val)}
-            />
-            <TouchableOpacity onPress={updateConfirmSecureTextEntry}>
-              {data.confirm_secureTextEntry ? (
-                <Feather name="eye-off" size={24} color="grey" />
-              ) : (
-                <Feather name="eye" size={24} color="grey" />
-              )}
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.error}>
-            {error ? (
-              <>
-                <Text>{error}</Text>
-                <Feather name="alert-circle" size={24} color="red" />
-              </>
-            ) : (
-              <></>
-            )}
-          </View>
-
           <View style={styles.button}>
+            <LinearGradient
+              colors={["#24ab89", "#076e53"]}
+              style={styles.signIn}
+            >
+              <Text style={styles.textSign}>Sign In</Text>
+            </LinearGradient>
             <TouchableOpacity
-              onPress={handleSubmit}
+              onPress={() => navigation.navigate("SignUpScreen")}
               style={[
                 styles.signIn,
-                { borderColor: "#009387", borderWidth: 1, marginTop: 15 },
+                { borderColor: "#24ab89", borderWidth: 1, marginTop: 15 },
               ]}
             >
               <Text style={[styles.textSign, { color: "#20735d" }]}>
@@ -243,7 +153,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   footer: {
-    flex: 2.3,
+    flex: 2.2,
     width: width * 0.95,
     backgroundColor: "#fff",
     borderTopLeftRadius: 30,
@@ -297,8 +207,5 @@ const styles = StyleSheet.create({
   heroImg: {
     borderRadius: 15,
     maxWidth: 400,
-  },
-  error: {
-    color: "red",
   },
 });

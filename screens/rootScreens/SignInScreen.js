@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -12,21 +12,25 @@ import {
   StatusBar,
   ImageBackground,
   SafeAreaView,
-} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { FontAwesome } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
-import * as Animatable from 'react-native-animatable';
-import { set } from 'react-native-reanimated';
-import { Formik } from 'formik';
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+// Icons
+import { FontAwesome } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
+import { SimpleLineIcons } from "@expo/vector-icons";
+// Animations
+import * as Animatable from "react-native-animatable";
+import { set } from "react-native-reanimated";
+// Forms
+import { Formik } from "formik";
 // Images
-import BackGraphic from '../../assets/habithunterauth.png';
-import WelcomeImage from '../../assets/images/habithunterWelcome.png';
+import BackGraphic from "../../assets/habithunterauth.png";
+import WelcomeImage from "../../assets/images/habithunterWelcome.png";
 
 export default function SignInScreen({ navigation }) {
   const [data, setData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     check_textInputChange: false,
     secureTextEntry: true,
   });
@@ -110,21 +114,28 @@ export default function SignInScreen({ navigation }) {
               )}
             </TouchableOpacity>
           </View>
+          <TouchableOpacity>
+            <View style={styles.help}>
+              <Text style={styles.text_footer}>Forgot Password?</Text>
+              <SimpleLineIcons name="question" size={24} color="black" />
+            </View>
+          </TouchableOpacity>
+
           <View style={styles.button}>
             <LinearGradient
-              colors={['#24ab89', '#076e53']}
+              colors={["#24ab89", "#076e53"]}
               style={styles.signIn}
             >
               <Text style={styles.textSign}>Sign In</Text>
             </LinearGradient>
             <TouchableOpacity
-              onPress={() => navigation.navigate('SignUpScreen')}
+              onPress={() => navigation.navigate("SignUpScreen")}
               style={[
                 styles.signIn,
-                { borderColor: '#24ab89', borderWidth: 1, marginTop: 15 },
+                { borderColor: "#24ab89", borderWidth: 1, marginTop: 15 },
               ]}
             >
-              <Text style={[styles.textSign, { color: '#20735d' }]}>
+              <Text style={[styles.textSign, { color: "#20735d" }]}>
                 Sign Up
               </Text>
             </TouchableOpacity>
@@ -135,17 +146,17 @@ export default function SignInScreen({ navigation }) {
   );
 }
 
-const { height, width } = Dimensions.get('screen');
+const { height, width } = Dimensions.get("screen");
 const height_logo = height * 0.52;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#009387',
+    backgroundColor: "#009387",
   },
   header: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     paddingVertical: 12,
     paddingHorizontal: 20,
     paddingBottom: 50,
@@ -153,56 +164,65 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   footer: {
-    flex: 2.2,
+    flex: 2.3,
     width: width * 0.95,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 30,
     paddingTop: 20,
   },
   text_header: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 30,
   },
   text_footer: {
-    color: '#076e53',
+    color: "#076e53",
     fontSize: 18,
   },
   action: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#f2f2f2',
+    borderBottomColor: "#f2f2f2",
     paddingBottom: 5,
+  },
+  help: {
+    width: width * 0.8,
+    flexDirection: "row",
+    marginTop: 25,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f2f2f2",
+    paddingBottom: 10,
+    justifyContent: "space-evenly",
   },
   textInput: {
     flex: 1,
-    marginTop: Platform.os === 'ios' ? 0 : -12,
+    marginTop: Platform.os === "ios" ? 0 : -12,
     paddingLeft: 10,
-    color: '#076e53',
+    color: "#076e53",
   },
   button: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 50,
   },
   signIn: {
-    width: '100%',
+    width: "100%",
     height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 10,
   },
   textSign: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFF',
+    fontWeight: "bold",
+    color: "#FFF",
   },
   image: {
     flex: 1,
-    resizeMode: 'cover',
-    alignItems: 'center',
+    resizeMode: "cover",
+    alignItems: "center",
   },
   heroImg: {
     borderRadius: 15,
