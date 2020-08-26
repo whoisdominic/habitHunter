@@ -17,37 +17,47 @@ const authSetup = false;
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
+  const removeToken = async () => {
+    try {
+      await AsyncStorage.removeItem("@habit_hunter_user");
+    } catch (e) {
+      console.log(e);
+    }
+
+    console.log("Done.");
+  };
 
   const authContext = useMemo(() => ({
-    signIn: () => {
-      setUserToken("fgkj");
-      setIsLoading(false);
-    },
     signOut: () => {
+      removeToken();
       setUserToken(null);
       setIsLoading(false);
     },
-    signUp: () => {
-      setUserToken("fgkj");
-      setIsLoading(false);
+    signIn: (props) => {
+      setUserToken(props);
     },
   }));
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }, []);
 
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem("@habit_hunter_user");
-      console.log(jsonValue);
+      console.log("top token", jsonValue);
+      if (jsonValue === null) {
+        setUserToken(null);
+      }
       return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
+      console.log("error in getData", e);
       // error reading value
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+      setUserToken(getData());
+    }, 1500);
+  }, []);
 
   if (isLoading) {
     return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -29,8 +29,11 @@ import Axios from "axios";
 import BackGraphic from "../../assets/habithunterauth.png";
 import WelcomeImage from "../../assets/images/habithunterWelcome.png";
 import AsyncStorage from "@react-native-community/async-storage";
+import { AuthContext } from "../../components/context.js";
 
 export default function SignInScreen({ navigation }) {
+  const { signIn } = useContext(AuthContext);
+
   const [error, setError] = useState(null);
   const [data, setData] = useState({
     email: "",
@@ -67,7 +70,7 @@ export default function SignInScreen({ navigation }) {
   };
   const storeData = async (value) => {
     try {
-      const jsonValue = JSON.stringify({ value });
+      const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem("@habit_hunter_user", jsonValue);
     } catch (e) {
       // saving error
@@ -84,6 +87,7 @@ export default function SignInScreen({ navigation }) {
       setError("Invalid Password");
     } else {
       try {
+        console.log("reached try");
         const request = await Axios({
           method: "post",
           url: "http://localhost:8000/users/login",
@@ -92,8 +96,10 @@ export default function SignInScreen({ navigation }) {
             password: data.password,
           },
         });
-        console.log(data);
+        console.log("line 95", data);
+        console.log("request", request);
         storeData(request);
+        signIn(request);
       } catch (error) {
         console.log(error);
         setError(error);

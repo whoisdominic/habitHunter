@@ -1,5 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import { StatusBar } from "expo-status-bar";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,16 +8,20 @@ import {
   SafeAreaView,
   Dimensions,
   TouchableOpacity,
-} from 'react-native';
-import BackImg from '../assets/images/habithunterAccount.png';
-const { width, height } = Dimensions.get('window');
+} from "react-native";
+import BackImg from "../assets/images/habithunterAccount.png";
+import { AntDesign } from "@expo/vector-icons";
+import { AuthContext } from "../components/context.js";
+
+const { width, height } = Dimensions.get("window");
 
 export default function Buddiescreen({ navigation }) {
+  const { signOut } = useContext(AuthContext);
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: "flex-end",
       }}
     >
       <StatusBar hidden={true} />
@@ -40,9 +44,15 @@ export default function Buddiescreen({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.5}>
             <View style={styles.sectionSm}>
-              <View style={styles.center}>
-                <Text>App Info</Text>
-              </View>
+              <TouchableOpacity
+                style={styles.LogoutCont}
+                onPress={() => signOut()}
+              >
+                <View>
+                  <Text>Logout</Text>
+                  <AntDesign name="logout" size={24} color="black" />
+                </View>
+              </TouchableOpacity>
             </View>
           </TouchableOpacity>
         </ImageBackground>
@@ -53,27 +63,27 @@ export default function Buddiescreen({ navigation }) {
 const styles = StyleSheet.create({
   image: {
     flex: 1,
-    resizeMode: 'cover',
-    alignItems: 'center',
+    resizeMode: "cover",
+    alignItems: "center",
   },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#212121',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#212121",
   },
   backImage: {
     flex: 1,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   sectionSm: {
     marginVertical: 10,
-    alignSelf: 'center',
-    backgroundColor: '#FFFFFF',
+    alignSelf: "center",
+    backgroundColor: "#FFFFFF",
     borderRadius: 15,
     width: width * 0.9,
     height: 200,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -84,12 +94,12 @@ const styles = StyleSheet.create({
   },
   sectionMed: {
     marginVertical: 10,
-    alignSelf: 'center',
-    backgroundColor: '#FFFFFF',
+    alignSelf: "center",
+    backgroundColor: "#FFFFFF",
     borderRadius: 15,
     width: width * 0.9,
     height: 300,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -100,7 +110,13 @@ const styles = StyleSheet.create({
   },
   center: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  LogoutCont: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
   },
 });
