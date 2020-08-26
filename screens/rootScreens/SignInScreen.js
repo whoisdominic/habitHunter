@@ -96,13 +96,15 @@ export default function SignInScreen({ navigation }) {
             password: data.password,
           },
         });
-        console.log("line 95", data);
-        console.log("request", request);
-        storeData(request);
-        signIn(request);
+        console.log("breaking", request);
+        if (typeof request.data.msg == String) {
+          setError(request.data.msg);
+        } else {
+          storeData(request.data);
+          signIn(request.data);
+        }
       } catch (error) {
-        console.log(error);
-        setError(error);
+        setError(JSON.stringify(error));
       }
     }
   };
