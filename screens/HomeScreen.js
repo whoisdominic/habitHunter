@@ -105,7 +105,10 @@ export default function HomeScreen({ navigation }) {
                 <Image source={MonthlyImg} style={styles.heroImg} />
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.blankMonthlyCard}>
+              <TouchableOpacity
+                activeOpacity={0.75}
+                style={styles.blankMonthlyCard}
+              >
                 <View style={styles.cardCont}>
                   <Image style={styles.cardTypo} source={NewHabit} />
                   <AntDesign
@@ -130,7 +133,10 @@ export default function HomeScreen({ navigation }) {
                 <Image source={WeeklyImg} style={styles.heroImg} />
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.blankWeeklyCard}>
+              <TouchableOpacity
+                activeOpacity={0.75}
+                style={styles.blankWeeklyCard}
+              >
                 <View style={styles.cardCont}>
                   <Image style={styles.cardTypo} source={NewHabit} />
                   <AntDesign
@@ -155,7 +161,10 @@ export default function HomeScreen({ navigation }) {
                 <Image source={DailyImg} style={styles.heroImg} />
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.blankDailyCard}>
+              <TouchableOpacity
+                activeOpacity={0.75}
+                style={styles.blankDailyCard}
+              >
                 <View style={styles.cardCont}>
                   <Image style={styles.cardTypo} source={NewHabit} />
                   <AntDesign
@@ -229,7 +238,7 @@ const styles = StyleSheet.create({
     height: 230,
     marginVertical: 7.5,
     marginRight: 8,
-    backgroundColor: "#5730c2",
+    backgroundColor: "#6639e3",
   },
   blankMonthlyCard: {
     flexDirection: "column",
@@ -240,7 +249,7 @@ const styles = StyleSheet.create({
     height: 230,
     marginVertical: 7.5,
     marginRight: 8,
-    backgroundColor: "#d43b99",
+    backgroundColor: "#2bb38e",
   },
   backImage: {
     flex: 1,
