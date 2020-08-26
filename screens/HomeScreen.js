@@ -27,7 +27,7 @@ const { width, height } = Dimensions.get("window");
 
 const element = ({ goal, image }) => {
   return (
-    <TouchableOpacity style={styles.blankCard}>
+    <TouchableOpacity style={styles.blankDailyCard}>
       <View style={styles.cardCont}>
         <Image style={styles.cardTypo} source={NewHabit} />
         <AntDesign
@@ -42,7 +42,7 @@ const element = ({ goal, image }) => {
 };
 const newHabit = () => {
   return (
-    <TouchableOpacity style={styles.blankCard}>
+    <TouchableOpacity style={styles.blankDailyCard}>
       <View style={styles.cardCont}>
         <Image style={styles.cardTypo} source={NewHabit} />
         <AntDesign
@@ -100,24 +100,79 @@ export default function HomeScreen({ navigation }) {
           <ImageBackground source={BackImg} style={styles.backImage}>
             <StatusBar hidden={true} />
             <SafeAreaView />
-            <ScrollView centerContent={true}>
+            <ScrollView horizontal={true}>
               <TouchableOpacity activeOpacity={0.5}>
                 <Image source={MonthlyImg} style={styles.heroImg} />
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={0.5}>
-                <Image source={WeeklyImg} style={styles.heroImg} />
+
+              <TouchableOpacity style={styles.blankMonthlyCard}>
+                <View style={styles.cardCont}>
+                  <Image style={styles.cardTypo} source={NewHabit} />
+                  <AntDesign
+                    style={styles.cardBtn}
+                    name="pluscircleo"
+                    size={80}
+                    color="black"
+                  />
+                </View>
               </TouchableOpacity>
-              <ScrollView horizontal={true}>
-                <TouchableOpacity activeOpacity={0.5}>
-                  <Image source={DailyImg} style={styles.heroImg} />
-                </TouchableOpacity>
-                <FlatList
+
+              {/* <FlatList
                   horizontal={true}
                   data={data}
                   renderItem={element}
                   keyExtractor={(item) => item.id}
-                />
-              </ScrollView>
+                /> */}
+            </ScrollView>
+
+            <ScrollView horizontal={true}>
+              <TouchableOpacity activeOpacity={0.5}>
+                <Image source={WeeklyImg} style={styles.heroImg} />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.blankWeeklyCard}>
+                <View style={styles.cardCont}>
+                  <Image style={styles.cardTypo} source={NewHabit} />
+                  <AntDesign
+                    style={styles.cardBtn}
+                    name="pluscircleo"
+                    size={80}
+                    color="black"
+                  />
+                </View>
+              </TouchableOpacity>
+
+              {/* <FlatList
+                  horizontal={true}
+                  data={data}
+                  renderItem={element}
+                  keyExtractor={(item) => item.id}
+                /> */}
+            </ScrollView>
+
+            <ScrollView horizontal={true}>
+              <TouchableOpacity activeOpacity={0.5}>
+                <Image source={DailyImg} style={styles.heroImg} />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.blankDailyCard}>
+                <View style={styles.cardCont}>
+                  <Image style={styles.cardTypo} source={NewHabit} />
+                  <AntDesign
+                    style={styles.cardBtn}
+                    name="pluscircleo"
+                    size={80}
+                    color="black"
+                  />
+                </View>
+              </TouchableOpacity>
+
+              {/* <FlatList
+                  horizontal={true}
+                  data={data}
+                  renderItem={element}
+                  keyExtractor={(item) => item.id}
+                /> */}
             </ScrollView>
           </ImageBackground>
         </View>
@@ -154,8 +209,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 8,
   },
-  blankCard: {
-    flex: 1,
+  blankDailyCard: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -165,6 +219,28 @@ const styles = StyleSheet.create({
     marginVertical: 7.5,
     marginRight: 8,
     backgroundColor: "#48b6db",
+  },
+  blankWeeklyCard: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 15,
+    width: 400,
+    height: 230,
+    marginVertical: 7.5,
+    marginRight: 8,
+    backgroundColor: "#5730c2",
+  },
+  blankMonthlyCard: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 15,
+    width: 400,
+    height: 230,
+    marginVertical: 7.5,
+    marginRight: 8,
+    backgroundColor: "#d43b99",
   },
   backImage: {
     flex: 1,
