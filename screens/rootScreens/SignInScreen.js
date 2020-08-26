@@ -22,12 +22,16 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable";
 import { set } from "react-native-reanimated";
 // Forms
-import { Formik } from "formik";
+import * as EmailValidator from "email-validator";
+import Phone from "phone";
+import Axios from "axios";
 // Images
 import BackGraphic from "../../assets/habithunterauth.png";
 import WelcomeImage from "../../assets/images/habithunterWelcome.png";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default function SignInScreen({ navigation }) {
+  const [error, setError] = useState(null);
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -61,7 +65,41 @@ export default function SignInScreen({ navigation }) {
       secureTextEntry: !data.secureTextEntry,
     });
   };
-
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify({ value });
+      await AsyncStorage.setItem("@habit_hunter_user", jsonValue);
+    } catch (e) {
+      // saving error
+      console.log(e);
+    }
+  };
+  const handleSubmit = async (event) => {
+    setError(null);
+    const emailVal = await EmailValidator.validate(data.email);
+    console.log("form data pre", data);
+    if (!emailVal) {
+      setError("Not a valid email address");
+    } else if (data.password.length < 5) {
+      setError("Invalid Password");
+    } else {
+      try {
+        const request = await Axios({
+          method: "post",
+          url: "http://localhost:8000/users/login",
+          data: {
+            email: data.email,
+            password: data.password,
+          },
+        });
+        console.log(data);
+        storeData(request);
+      } catch (error) {
+        console.log(error);
+        setError(error);
+      }
+    }
+  };
   return (
     <View style={styles.container}>
       <ImageBackground source={BackGraphic} style={styles.image}>
@@ -120,14 +158,25 @@ export default function SignInScreen({ navigation }) {
               <SimpleLineIcons name="question" size={24} color="black" />
             </View>
           </TouchableOpacity>
-
+          <View style={styles.error}>
+            {error ? (
+              <>
+                <Text>{error}</Text>
+                <Feather name="alert-circle" size={24} color="red" />
+              </>
+            ) : (
+              <></>
+            )}
+          </View>
           <View style={styles.button}>
-            <LinearGradient
-              colors={["#24ab89", "#076e53"]}
-              style={styles.signIn}
-            >
-              <Text style={styles.textSign}>Sign In</Text>
-            </LinearGradient>
+            <TouchableOpacity style={styles.signIn} onPress={handleSubmit}>
+              <LinearGradient
+                style={styles.signIn}
+                colors={["#24ab89", "#076e53"]}
+              >
+                <Text style={styles.textSign}>Sign In</Text>
+              </LinearGradient>
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate("SignUpScreen")}
               style={[
@@ -195,7 +244,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#f2f2f2",
     paddingBottom: 10,
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
   },
   textInput: {
     flex: 1,
@@ -227,5 +276,11 @@ const styles = StyleSheet.create({
   heroImg: {
     borderRadius: 15,
     maxWidth: 400,
+  },
+  error: {
+    marginTop: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    color: "red",
   },
 });

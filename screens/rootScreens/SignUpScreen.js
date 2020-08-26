@@ -236,7 +236,7 @@ export default function SignUpScreen({ navigation }) {
               onPress={handleSubmit}
               style={[
                 styles.signIn,
-                { borderColor: "#009387", borderWidth: 1, marginTop: 15 },
+                { borderColor: "#009387", borderWidth: 1, marginTop: -15 },
               ]}
             >
               <Text style={[styles.textSign, { color: "#20735d" }]}>
@@ -324,6 +324,9 @@ const styles = StyleSheet.create({
     maxWidth: 400,
   },
   error: {
+    marginTop: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
     color: "red",
   },
 });

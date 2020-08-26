@@ -1,91 +1,84 @@
-import 'react-native-gesture-handler';
-import * as React from 'react';
-import { ImageBackground, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { AntDesign } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-// Screens
-import HomeScreen from './screens/HomeScreen.js';
-import BuddiesScreen from './screens/BuddiesScreen.js';
-import AccountScreen from './screens/AccountScreen.js';
+import "react-native-gesture-handler";
+import React, { useMemo, useState, useEffect } from "react";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 // Auth/Root Stack
-import RootStackScreen from './screens/RootStackScreen.js';
-// Images
-import BackImg from './assets/images/appbackgroundfill.png';
+import RootStackScreen from "./screens/RootStackScreen.js";
+//  Main Stack
+import MainStackScreen from "./screens/MainStackScreen.js";
+// Context
+import { AuthContext } from "./components/context.js";
+// Local Storage
+import AsyncStorage from "@react-native-community/async-storage";
 // Constants
-const Stack = createStackNavigator();
-const Tab = createMaterialBottomTabNavigator();
 
 const authSetup = false;
 
-export default function App() {
+function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [userToken, setUserToken] = useState(null);
+
+  const authContext = useMemo(() => ({
+    signIn: () => {
+      setUserToken("fgkj");
+      setIsLoading(false);
+    },
+    signOut: () => {
+      setUserToken(null);
+      setIsLoading(false);
+    },
+    signUp: () => {
+      setUserToken("fgkj");
+      setIsLoading(false);
+    },
+  }));
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("@habit_hunter_user");
+      console.log(jsonValue);
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#24ab89",
+        }}
+      >
+        <ActivityIndicator size="large" color="black" />
+      </View>
+    );
+  }
+
   return (
-    <NavigationContainer>
-      {authSetup ? (
-        <ImageBackground source={BackImg} style={styles.backImage}>
-          <Tab.Navigator
-            activeColor="#FFF"
-            inactiveColor="#24ab89"
-            barStyle={{
-              height: 80,
-              flex: 0,
-              borderTopLeftRadius: 1000,
-              borderTopRightRadius: 1000,
-              justifyContent: 'center',
-              paddingHorizontal: 75,
-              paddingTop: 15,
-              backgroundColor: '#24ab89',
-            }}
-          >
-            <Tab.Screen
-              name="Habits"
-              component={HomeScreen}
-              options={{
-                tabBarLabel: 'Habits',
-                tabBarAccessibilityLabel: 'Habits',
-                tabBarIcon: ({ color }) => (
-                  <Entypo name="compass" size={24} color="black" />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Buddies"
-              component={BuddiesScreen}
-              options={{
-                tabBarLabel: 'Buddies',
-                tabBarAccessibilityLabel: 'buddies',
-                tabBarIcon: ({ color }) => (
-                  <AntDesign name="aliwangwang-o1" size={24} color="black" />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Account"
-              component={AccountScreen}
-              options={{
-                tabBarLabel: 'Account',
-                tabBarAccessibilityLabel: 'account',
-                tabBarIcon: ({ color }) => (
-                  <FontAwesome5 name="user-circle" size={24} color="black" />
-                ),
-              }}
-            />
-          </Tab.Navigator>
-        </ImageBackground>
-      ) : (
-        <RootStackScreen />
-      )}
-    </NavigationContainer>
+    <AuthContext.Provider value={authContext}>
+      <NavigationContainer>
+        {userToken ? <MainStackScreen /> : <RootStackScreen />}
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
 }
+
+export default App;
 
 const styles = StyleSheet.create({
   backImage: {
     flex: 1,
-    resizeMode: 'repeat',
-    justifyContent: 'center',
+    resizeMode: "repeat",
+    justifyContent: "center",
   },
 });
