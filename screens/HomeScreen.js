@@ -9,9 +9,12 @@ import {
   ImageBackground,
   TouchableOpacity,
   Dimensions,
+  Pressable,
+  Button,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { FlatList } from "react-native-gesture-handler";
+import Modal from "react-native-modal";
 // Cards
 import MonthlyImg from "../assets/images/habithuntermonthly.png";
 import WeeklyImg from "../assets/images/habithunterweekly.png";
@@ -20,8 +23,11 @@ import BackImg from "../assets/images/habithunterback.png";
 import BlankImg from "../assets/images/habithunternew.png";
 // Typo
 import NewHabit from "../assets/images/typography/newhabit.png";
+import Start from "../assets/images/typography/start.png";
+import Buddies from "../assets/images/typography/buddies.png";
 // Icons
 import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 // Constants
 const { width, height } = Dimensions.get("window");
 
@@ -84,6 +90,20 @@ const data = [
 ];
 
 export default function HomeScreen({ navigation }) {
+  const [dailyModal, setDailyModal] = useState(false);
+  const [weeklyModal, setWeeklyModal] = useState(false);
+  const [monthlyModal, setMonthlyModal] = useState(false);
+
+  const dailyModalToggle = () => {
+    setDailyModal(!dailyModal);
+  };
+  const weeklyModalToggle = () => {
+    setWeeklyModal(!weeklyModal);
+  };
+  const monthlyModalToggle = () => {
+    setMonthlyModal(!monthlyModal);
+  };
+
   return (
     <View
       style={{
@@ -106,6 +126,7 @@ export default function HomeScreen({ navigation }) {
               </TouchableOpacity>
 
               <TouchableOpacity
+                onLongPress={monthlyModalToggle}
                 activeOpacity={0.75}
                 style={styles.blankMonthlyCard}
               >
@@ -134,6 +155,7 @@ export default function HomeScreen({ navigation }) {
               </TouchableOpacity>
 
               <TouchableOpacity
+                onLongPress={weeklyModalToggle}
                 activeOpacity={0.75}
                 style={styles.blankWeeklyCard}
               >
@@ -164,6 +186,7 @@ export default function HomeScreen({ navigation }) {
               <TouchableOpacity
                 activeOpacity={0.75}
                 style={styles.blankDailyCard}
+                onLongPress={dailyModalToggle}
               >
                 <View style={styles.cardCont}>
                   <Image style={styles.cardTypo} source={NewHabit} />
@@ -185,6 +208,65 @@ export default function HomeScreen({ navigation }) {
             </ScrollView>
           </ImageBackground>
         </View>
+
+        <Modal
+          style={{ flex: 1, maxHeight: height, marginTop: 50 }}
+          swipeDirection={["left", "right"]}
+          onSwipeComplete={dailyModalToggle}
+          isVisible={dailyModal}
+        >
+          <View style={styles.modal}>
+            <View style={styles.modalCont}>
+              <View style={styles.modalHead}>
+                <Image source={NewHabit} style={styles.modalLogo} />
+
+                <TouchableOpacity onPress={dailyModalToggle}>
+                  <Ionicons
+                    style={{ margin: 16 }}
+                    name="ios-close-circle-outline"
+                    size={60}
+                    color="white"
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.modalContBuddies}>
+                <View style={styles.modalBtn}>
+                  <Text>Buddies</Text>
+                </View>
+                <View style={styles.modalBtn}>
+                  <Text>Start</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+        {/* 
+        <Modal
+          style={{ flex: 1, maxHeight: height, marginTop: 50 }}
+          swipeDirection={["left", "right"]}
+          isVisible={weeklyModal}
+        >
+          <View style={styles.modal}>
+            <View style={styles.modalCont}>
+              <Text>Weekly Modal</Text>
+              <Button title="Hide modal" onPress={weeklyModalToggle} />
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
+          style={{ flex: 1, maxHeight: height, marginTop: 50 }}
+          swipeDirection={["left", "right"]}
+          isVisible={monthlyModal}
+        >
+          <View style={styles.modal}>
+            <View style={styles.modalCont}>
+              <Text>Monthly Modal</Text>
+              <Button title="Hide modal" onPress={monthlyModalToggle} />
+            </View>
+          </View>
+        </Modal> */}
       </View>
     </View>
   );
@@ -226,7 +308,7 @@ const styles = StyleSheet.create({
     width: 400,
     height: 230,
     marginVertical: 7.5,
-    marginRight: 8,
+    marginRight: 6,
     backgroundColor: "#48b6db",
   },
   blankWeeklyCard: {
@@ -237,7 +319,7 @@ const styles = StyleSheet.create({
     width: 400,
     height: 230,
     marginVertical: 7.5,
-    marginRight: 8,
+    marginRight: 6,
     backgroundColor: "#6639e3",
   },
   blankMonthlyCard: {
@@ -248,8 +330,8 @@ const styles = StyleSheet.create({
     width: 400,
     height: 230,
     marginVertical: 7.5,
-    marginRight: 8,
-    backgroundColor: "#2bb38e",
+    marginRight: 6,
+    backgroundColor: "#24ab89",
   },
   backImage: {
     flex: 1,
@@ -263,4 +345,38 @@ const styles = StyleSheet.create({
   },
   cardTypo: { marginRight: 60 },
   cardBtn: { marginRight: 25 },
+  modal: {
+    flex: 1,
+    borderRadius: 15,
+    height: height * 0.8,
+    backgroundColor: "#212121",
+  },
+  modalCont: {
+    flex: 1,
+  },
+  modalHead: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    height: height * 0.2,
+    marginTop: 6,
+  },
+  modalLogo: {
+    width: width * 0.5,
+    height: height * 0.1,
+  },
+  modalBtn: {
+    backgroundColor: "#48b6db",
+    borderRadius: 25,
+    height: 75,
+    width: width * 0.75,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalImg: {},
+  modalContBuddies: {
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 15,
+  },
 });
