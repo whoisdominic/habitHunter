@@ -22,6 +22,7 @@ import RegisterImage from "../../assets/images/habithunterregister.png";
 import * as EmailValidator from "email-validator";
 import Phone from "phone";
 import Axios from "axios";
+const APIURL = "https://habithunter.herokuapp.com";
 
 export default function SignUpScreen({ navigation }) {
   const [data, setData] = useState({
@@ -106,7 +107,7 @@ export default function SignUpScreen({ navigation }) {
       try {
         const request = await Axios({
           method: "post",
-          url: "http://localhost:8000/users/signup",
+          url: `${APIURL}/users/signup`,
           data: {
             email: data.email,
             phoneNumber: data.phoneNumber,

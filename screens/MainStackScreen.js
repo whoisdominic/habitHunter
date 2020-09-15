@@ -13,6 +13,8 @@ import BuddiesScreen from "./BuddiesScreen.js";
 import AccountScreen from "./AccountScreen.js";
 // Images
 import BackImg from "../assets/images/appbackgroundfill.png";
+// Context
+import { AuthContext } from "../components/context.js";
 // Constants
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();

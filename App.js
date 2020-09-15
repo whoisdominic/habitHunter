@@ -11,7 +11,6 @@ import { AuthContext } from "./components/context.js";
 // Local Storage
 import AsyncStorage from "@react-native-community/async-storage";
 // Constants
-
 const authSetup = false;
 
 function App() {

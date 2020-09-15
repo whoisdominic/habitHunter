@@ -1,8 +1,8 @@
 // Expo
-import { StatusBar } from 'expo-status-bar';
-import * as Contacts from 'expo-contacts';
+import { StatusBar } from "expo-status-bar";
+import * as Contacts from "expo-contacts";
 // React +
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,22 +12,26 @@ import {
   Dimensions,
   FlatList,
   TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
-} from 'react-native';
+} from "react-native";
 // Other Libraries
+import { SwipeListView } from "react-native-swipe-list-view";
+// Icons
+import { AntDesign } from "@expo/vector-icons";
 // Images
-import BackImg from '../assets/images/habithunterbackBuddies.png';
+import BackImg from "../assets/images/habithunterbackBuddies.png";
 // Algorithms
-import ContactSort from '../algorithms/ContactSort.js';
+import ContactSort from "../algorithms/ContactSort.js";
 // Constants
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 export default function Buddiescreen({ navigation }) {
   const [contactList, setContactList] = useState(null);
 
   const fetchContacts = async () => {
     const { status } = await Contacts.requestPermissionsAsync();
-    if (status === 'granted') {
+    if (status === "granted") {
       const { data } = await Contacts.getContactsAsync({
         fields: [Contacts.Fields.FirstName, Contacts.Fields.LastName],
         sort: Contacts.SortTypes.FirstName,
@@ -47,43 +51,55 @@ export default function Buddiescreen({ navigation }) {
       }
     }
   };
+  const handleBuddieAdd = async (item) => {
+    console.log(item);
+  };
+
+  const onRowDidOpen = (rowKey) => {
+    console.log("This row opened", rowKey);
+  };
 
   useEffect(() => {
     fetchContacts();
   }, []);
   // LIST ITEM
-  const Item = ({ name }) => (
-    <TouchableOpacity activeOpacity={0.5}>
-      <View
+  const ContactItem = ({ name }) => (
+    <View style={styles.contactBtn}>
+      <Text
         style={{
-          padding: 25,
-          alignItems: 'center',
-          borderRadius: 7.5,
-          width: width * 0.9,
-          margin: 3.5,
-          backgroundColor: '#24ab89',
-          borderColor: '#FFF',
-          borderWidth: 2.25,
+          fontSize: 15,
+          color: "#fff",
         }}
       >
-        <Text
-          style={{
-            fontSize: 15,
-            color: '#fff',
-          }}
-        >
-          {name}
-        </Text>
-      </View>
-    </TouchableOpacity>
+        {name}
+      </Text>
+    </View>
   );
-  const renderItem = ({ item }) => <Item name={item.name} />;
+
+  const ContactHiddenItem = ({ item }) => (
+    <View style={styles.backRightBtn}>
+      <TouchableOpacity
+        onPress={() => {
+          handleBuddieAdd(item);
+        }}
+      >
+        <AntDesign
+          style={styles.addIcon}
+          name="adduser"
+          size={34}
+          color="white"
+        />
+      </TouchableOpacity>
+    </View>
+  );
+  const renderContactItem = ({ item }) => <ContactItem name={item.name} />;
+  const renderContactHiddenItem = (item) => <ContactHiddenItem item={item} />;
 
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: "flex-end",
       }}
     >
       <StatusBar hidden={true} />
@@ -97,11 +113,20 @@ export default function Buddiescreen({ navigation }) {
             <Text style={styles.txtSections}>Contacts</Text>
           </View>
           <View style={styles.container}>
-            <FlatList
+            <SwipeListView
+              data={contactList}
+              renderItem={renderContactItem}
+              renderHiddenItem={renderContactHiddenItem}
+              keyExtractor={(item) => item.id}
+              rightOpenValue={-75}
+              leftOpenValue={0}
+            />
+
+            {/* <FlatList
               data={contactList}
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
-            />
+            /> */}
           </View>
         </ImageBackground>
       </View>
@@ -111,18 +136,18 @@ export default function Buddiescreen({ navigation }) {
 const styles = StyleSheet.create({
   image: {
     flex: 1,
-    resizeMode: 'cover',
-    alignItems: 'center',
+    resizeMode: "cover",
+    alignItems: "center",
   },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   backImage: {
     flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
+    resizeMode: "cover",
+    justifyContent: "center",
   },
   item: {
     flex: 1,
@@ -135,12 +160,12 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     marginVertical: 10,
-    alignSelf: 'center',
-    backgroundColor: '#FFFFFF',
+    alignSelf: "center",
+    backgroundColor: "#FFFFFF",
     borderRadius: 15,
     width: width * 0.9,
     height: 35,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -150,10 +175,50 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   center: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   txtSections: {
     fontSize: 20,
+  },
+  hiddenItem: {
+    backgroundColor: "#FFF",
+  },
+  contactBtn: {
+    padding: 25,
+    alignItems: "center",
+    borderRadius: 7.5,
+    width: width * 0.9,
+    margin: 3.5,
+    backgroundColor: "#24ab89",
+    borderColor: "#FFF",
+    borderWidth: 2.25,
+  },
+  contactBtnHidden: {
+    backgroundColor: "#24ab89",
+    padding: 25,
+    alignItems: "flex-end",
+    borderRadius: 7.5,
+    width: width * 0.9,
+    margin: 3.5,
+    borderColor: "#FFF",
+    borderWidth: 2.25,
+  },
+  backRightBtn: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    borderRadius: 7.5,
+    width: width * 0.9,
+    margin: 3.5,
+    padding: 25,
+    backgroundColor: "#212121",
+    borderColor: "#FFF",
+    borderWidth: 2.25,
+  },
+  addIcon: {
+    marginTop: -15,
+    height: 32,
+    top: 5,
+    right: -7.5,
   },
 });

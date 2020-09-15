@@ -30,6 +30,7 @@ import BackGraphic from "../../assets/habithunterauth.png";
 import WelcomeImage from "../../assets/images/habithunterWelcome.png";
 import AsyncStorage from "@react-native-community/async-storage";
 import { AuthContext } from "../../components/context.js";
+const APIURL = ["https://habithunter.herokuapp.com", "http://localhost:8000"];
 
 export default function SignInScreen({ navigation }) {
   const { signIn } = useContext(AuthContext);
@@ -90,7 +91,7 @@ export default function SignInScreen({ navigation }) {
         console.log("reached try");
         const request = await Axios({
           method: "post",
-          url: "http://localhost:8000/users/login",
+          url: `${APIURL[1]}/users/login`,
           data: {
             email: data.email,
             password: data.password,
