@@ -20,6 +20,7 @@ import { SwipeListView } from "react-native-swipe-list-view";
 import Axios from "axios";
 // Icons
 import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 // Images
 import BackImg from "../assets/images/habithunterbackBuddies.png";
 // Local Storage
@@ -108,6 +109,33 @@ export default function Buddiescreen({ navigation }) {
     }
   };
 
+  const handleBuddieDelete = async (buddy) => {
+    console.log("buddy to delete =", buddy);
+    const buddyId = buddy.item.item._id;
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "x-auth-token",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNjFiMzYxYmYzNjYzMDAxNzFmZmUyMyIsImlhdCI6MTYwMDIzODQ0M30.z0LG3C2cd66ni9XzM1H12lFAXqZNcv5UJ_LCyjOWrHk"
+    );
+    myHeaders.append("id", "5f61b361bf366300171ffe23");
+    var raw = "";
+    var requestOptions = {
+      method: "DELETE",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    try {
+      const request = await fetch(
+        `https://habithunter.herokuapp.com/buddies/remove/${buddyId}`,
+        requestOptions
+      );
+      const refresh = await fetchBuddies();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const onRowDidOpen = (rowKey) => {
     console.log("This row opened", rowKey);
   };
@@ -164,9 +192,27 @@ export default function Buddiescreen({ navigation }) {
     </View>
   );
 
+  const BuddyHiddenItem = (item) => (
+    <View style={styles.backRightBtn}>
+      <TouchableOpacity
+        onPress={() => {
+          handleBuddieDelete(item);
+        }}
+      >
+        <FontAwesome
+          style={styles.trashIcon}
+          name="trash"
+          size={24}
+          color="red"
+        />
+      </TouchableOpacity>
+    </View>
+  );
+
   const renderContactItem = ({ item }) => <ContactItem name={item.name} />;
   const renderContactHiddenItem = (item) => <ContactHiddenItem item={item} />;
   const renderBuddyItem = ({ item }) => <BuddyItem item={item} />;
+  const renderBuddyHiddenItem = (item) => <BuddyHiddenItem item={item} />;
 
   return (
     <View
@@ -182,13 +228,22 @@ export default function Buddiescreen({ navigation }) {
           <View style={[styles.sectionHeader, styles.center]}>
             <Text style={styles.txtSections}>Buddies</Text>
           </View>
-          <View style={styles.container}>
-            <FlatList
-              data={buddies}
-              keyExtractor={(item) => item._id}
-              renderItem={renderBuddyItem}
-            />
-          </View>
+          {buddies[0] ? (
+            <View style={styles.fullContainer}>
+              <SwipeListView
+                data={buddies}
+                keyExtractor={(item) => item._id}
+                renderItem={renderBuddyItem}
+                renderHiddenItem={renderBuddyHiddenItem}
+                rightOpenValue={-75}
+                leftOpenValue={0}
+              />
+            </View>
+          ) : (
+            <View style={styles.emptyContainer}>
+              <BuddyItem item={{ name: "Add a buddy below! 🤓" }} />
+            </View>
+          )}
           <View style={[styles.sectionHeader, styles.center]}>
             <Text style={styles.txtSections}>Contacts</Text>
           </View>
@@ -215,6 +270,14 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  fullContainer: {
     alignItems: "center",
     justifyContent: "center",
   },
@@ -290,9 +353,14 @@ const styles = StyleSheet.create({
     borderWidth: 2.25,
   },
   addIcon: {
-    marginTop: -15,
+    marginTop: -14.5,
     height: 32,
     top: 5,
     right: -7.5,
+  },
+  trashIcon: {
+    marginTop: -14.5,
+    height: 32,
+    top: 9.5,
   },
 });
