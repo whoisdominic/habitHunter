@@ -1,8 +1,8 @@
 # Habit Hunter
 
 ![React Native, Android, ios Logo](https://www.futuremind.com/m/cache/c8/15/c8150d863e584ed42ccfbdc3f3f1aa3a.jpg)
-This application is part of a video tutorial for recent bootcamp grads interested in react native!
-Follow the lesson repo [HERE](https://github.com/whoisdominic/native-foundations)
+Are you a recent bootcamp grad who is interested in react native!
+Check out my React-Native foundations course, lesson repo [HERE](https://github.com/whoisdominic/native-foundations)
 
 ---
 
