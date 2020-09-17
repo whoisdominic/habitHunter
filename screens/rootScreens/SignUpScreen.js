@@ -12,7 +12,6 @@ import {
   ImageBackground,
   SafeAreaView,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable";
@@ -22,7 +21,8 @@ import RegisterImage from "../../assets/images/habithunterregister.png";
 import * as EmailValidator from "email-validator";
 import Phone from "phone";
 import Axios from "axios";
-const APIURL = "https://habithunter.herokuapp.com";
+/// Api
+const APIURL = ["https://habithunter.herokuapp.com", "http://localhost:8000"];
 
 export default function SignUpScreen({ navigation }) {
   const [data, setData] = useState({
@@ -107,7 +107,7 @@ export default function SignUpScreen({ navigation }) {
       try {
         const request = await Axios({
           method: "post",
-          url: `${APIURL}/users/signup`,
+          url: `${APIURL[0]}/users/signup`,
           data: {
             email: data.email,
             phoneNumber: data.phoneNumber,

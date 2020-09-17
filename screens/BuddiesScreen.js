@@ -17,23 +17,57 @@ import {
 } from "react-native";
 // Other Libraries
 import { SwipeListView } from "react-native-swipe-list-view";
+import Axios from "axios";
 // Icons
 import { AntDesign } from "@expo/vector-icons";
 // Images
 import BackImg from "../assets/images/habithunterbackBuddies.png";
+// Local Storage
+import AsyncStorage from "@react-native-community/async-storage";
 // Algorithms
 import ContactSort from "../algorithms/ContactSort.js";
 // Constants
 const { width, height } = Dimensions.get("window");
 
 export default function Buddiescreen({ navigation }) {
+  const [buddies, setBuddies] = useState(null);
   const [contactList, setContactList] = useState(null);
+  const [userToken, setUserToken] = useState(null);
+
+  const fetchBuddies = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("@habit_hunter_user");
+      if (jsonValue === null) {
+        setUserToken(null);
+      }
+      const user = JSON.parse(jsonValue);
+      setUserToken(user);
+      var config = {
+        method: "get",
+        url: "https://habithunter.herokuapp.com/buddies/all",
+        headers: {
+          "x-auth-token": user.token,
+          id: user.user.id,
+        },
+        data: "",
+      };
+      const allBuddiesRequest = await Axios(config);
+      setBuddies(allBuddiesRequest.data.buddies);
+      console.log("buddies", buddies);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchContacts = async () => {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === "granted") {
       const { data } = await Contacts.getContactsAsync({
-        fields: [Contacts.Fields.FirstName, Contacts.Fields.LastName],
+        fields: [
+          Contacts.Fields.FirstName,
+          Contacts.Fields.LastName,
+          Contacts.Fields.PhoneNumbers,
+        ],
         sort: Contacts.SortTypes.FirstName,
       });
 
@@ -46,13 +80,32 @@ export default function Buddiescreen({ navigation }) {
         _____________________
         _____________________
         */
-        console.log(contacts);
         setContactList(contacts);
       }
     }
   };
   const handleBuddieAdd = async (item) => {
-    console.log(item);
+    const name = item.item.name;
+    const numbers = item.item.phoneNumbers[0];
+    try {
+      var myHeaders = new Headers();
+      myHeaders.append("x-auth-token", userToken.token);
+      myHeaders.append("id", userToken.user.id);
+      myHeaders.append("Content-Type", "application/json");
+      var raw = JSON.stringify({ buddyName: name, buddyPhone: numbers.digits });
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+      };
+      const request = await fetch(
+        "https://habithunter.herokuapp.com/buddies/add",
+        requestOptions
+      );
+      const refresh = await fetchBuddies();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onRowDidOpen = (rowKey) => {
@@ -62,6 +115,11 @@ export default function Buddiescreen({ navigation }) {
   useEffect(() => {
     fetchContacts();
   }, []);
+
+  useEffect(() => {
+    fetchBuddies();
+  }, []);
+
   // LIST ITEM
   const ContactItem = ({ name }) => (
     <View style={styles.contactBtn}>
@@ -92,8 +150,23 @@ export default function Buddiescreen({ navigation }) {
       </TouchableOpacity>
     </View>
   );
+
+  const BuddyItem = ({ item }) => (
+    <View style={styles.contactBtn}>
+      <Text
+        style={{
+          fontSize: 15,
+          color: "#fff",
+        }}
+      >
+        {item.name}
+      </Text>
+    </View>
+  );
+
   const renderContactItem = ({ item }) => <ContactItem name={item.name} />;
   const renderContactHiddenItem = (item) => <ContactHiddenItem item={item} />;
+  const renderBuddyItem = ({ item }) => <BuddyItem item={item} />;
 
   return (
     <View
@@ -109,6 +182,13 @@ export default function Buddiescreen({ navigation }) {
           <View style={[styles.sectionHeader, styles.center]}>
             <Text style={styles.txtSections}>Buddies</Text>
           </View>
+          <View style={styles.container}>
+            <FlatList
+              data={buddies}
+              keyExtractor={(item) => item._id}
+              renderItem={renderBuddyItem}
+            />
+          </View>
           <View style={[styles.sectionHeader, styles.center]}>
             <Text style={styles.txtSections}>Contacts</Text>
           </View>
@@ -121,12 +201,6 @@ export default function Buddiescreen({ navigation }) {
               rightOpenValue={-75}
               leftOpenValue={0}
             />
-
-            {/* <FlatList
-              data={contactList}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-            /> */}
           </View>
         </ImageBackground>
       </View>

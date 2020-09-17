@@ -64,10 +64,10 @@ function App() {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "#24ab89",
+          backgroundColor: "#212121",
         }}
       >
-        <ActivityIndicator size="large" color="black" />
+        <ActivityIndicator size="large" color="white" />
       </View>
     );
   }

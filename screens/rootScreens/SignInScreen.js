@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   Dimensions,
   Image,
@@ -20,7 +19,6 @@ import { Feather } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 // Animations
 import * as Animatable from "react-native-animatable";
-import { set } from "react-native-reanimated";
 // Forms
 import * as EmailValidator from "email-validator";
 import Phone from "phone";
@@ -30,6 +28,7 @@ import BackGraphic from "../../assets/habithunterauth.png";
 import WelcomeImage from "../../assets/images/habithunterWelcome.png";
 import AsyncStorage from "@react-native-community/async-storage";
 import { AuthContext } from "../../components/context.js";
+/// Api
 const APIURL = ["https://habithunter.herokuapp.com", "http://localhost:8000"];
 
 export default function SignInScreen({ navigation }) {
@@ -90,8 +89,8 @@ export default function SignInScreen({ navigation }) {
       try {
         console.log("reached try");
         const request = await Axios({
-          method: "post",
-          url: `${APIURL[1]}/users/login`,
+          method: "POST",
+          url: `${APIURL[0]}/users/login`,
           data: {
             email: data.email,
             password: data.password,
