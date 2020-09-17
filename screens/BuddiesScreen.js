@@ -31,7 +31,7 @@ import ContactSort from "../algorithms/ContactSort.js";
 const { width, height } = Dimensions.get("window");
 
 export default function Buddiescreen({ navigation }) {
-  const [buddies, setBuddies] = useState(null);
+  const [buddies, setBuddies] = useState([]);
   const [contactList, setContactList] = useState(null);
   const [userToken, setUserToken] = useState(null);
 
@@ -54,7 +54,6 @@ export default function Buddiescreen({ navigation }) {
       };
       const allBuddiesRequest = await Axios(config);
       setBuddies(allBuddiesRequest.data.buddies);
-      console.log("buddies", buddies);
     } catch (error) {
       console.log(error);
     }
@@ -110,7 +109,6 @@ export default function Buddiescreen({ navigation }) {
   };
 
   const handleBuddieDelete = async (buddy) => {
-    console.log("buddy to delete =", buddy);
     const buddyId = buddy.item.item._id;
     var myHeaders = new Headers();
     myHeaders.append(
@@ -228,7 +226,7 @@ export default function Buddiescreen({ navigation }) {
           <View style={[styles.sectionHeader, styles.center]}>
             <Text style={styles.txtSections}>Buddies</Text>
           </View>
-          {buddies[0] ? (
+          {buddies.length > 0 ? (
             <View style={styles.fullContainer}>
               <SwipeListView
                 data={buddies}
@@ -280,6 +278,7 @@ const styles = StyleSheet.create({
   fullContainer: {
     alignItems: "center",
     justifyContent: "center",
+    maxHeight: height * 0.35,
   },
   backImage: {
     flex: 1,
