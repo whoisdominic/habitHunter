@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import BackImg from "../assets/images/habithunterAccount.png";
 import { AntDesign } from "@expo/vector-icons";
-import { AuthContext } from "../components/context.js";
+import { AuthContext } from "../components/authContext.js";
 
 const { width, height } = Dimensions.get("window");
 

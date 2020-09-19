@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -9,12 +9,16 @@ import {
   ImageBackground,
   TouchableOpacity,
   Dimensions,
-  Pressable,
-  Button,
+  TextInput,
+  Switch,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { FlatList } from "react-native-gesture-handler";
 import Modal from "react-native-modal";
+// Local Storage
+import AsyncStorage from "@react-native-community/async-storage";
+// Other Libraries
+import Axios from "axios";
 // Cards
 import MonthlyImg from "../assets/images/habithuntermonthly.png";
 import WeeklyImg from "../assets/images/habithunterweekly.png";
@@ -30,6 +34,8 @@ import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 // Constants
 const { width, height } = Dimensions.get("window");
+
+import { AuthContext } from "../components/authContext.js";
 
 const element = ({ goal, image }) => {
   return (
@@ -93,8 +99,34 @@ export default function HomeScreen({ navigation }) {
   const [dailyModal, setDailyModal] = useState(false);
   const [weeklyModal, setWeeklyModal] = useState(false);
   const [monthlyModal, setMonthlyModal] = useState(false);
+  const [buddies, setBuddies] = useState();
+  const [userToken, setUserToken] = useState(null);
+
+  const [attachBuddies, setAttachBuddies] = useState({});
+
+  const toggleSwitch = (props) => {
+    const buddy = props._id;
+    if (attachBuddies[buddy] === undefined) {
+      setAttachBuddies({ ...attachBuddies, [buddy]: true });
+    } else {
+      setAttachBuddies({ ...attachBuddies, [buddy]: !attachBuddies[buddy] });
+    }
+  };
+
+  const buddyItem = ({ item }) => (
+    <View style={styles.buddyItemCont}>
+      <Text style={styles.buddyItem}>{item.name}</Text>
+      <Switch
+        value={attachBuddies[item._id]}
+        onValueChange={() => {
+          toggleSwitch(item);
+        }}
+      />
+    </View>
+  );
 
   const dailyModalToggle = () => {
+    fetchBuddies();
     setDailyModal(!dailyModal);
   };
   const weeklyModalToggle = () => {
@@ -103,6 +135,39 @@ export default function HomeScreen({ navigation }) {
   const monthlyModalToggle = () => {
     setMonthlyModal(!monthlyModal);
   };
+
+  const habitGoalChange = (val) => {
+    console.log(val);
+  };
+
+  const fetchBuddies = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("@habit_hunter_user");
+      if (jsonValue === null) {
+        setUserToken(null);
+      }
+      const user = JSON.parse(jsonValue);
+      setUserToken(user);
+      var config = {
+        method: "get",
+        url: "https://habithunter.herokuapp.com/buddies/all",
+        headers: {
+          "x-auth-token": user.token,
+          id: user.user.id,
+        },
+        data: "",
+      };
+      const allBuddiesRequest = await Axios(config);
+      const test = await console.log(allBuddiesRequest.data.buddies);
+      setBuddies(allBuddiesRequest.data.buddies);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBuddies();
+  }, []);
 
   return (
     <View
@@ -219,7 +284,6 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.modalCont}>
               <View style={styles.modalHead}>
                 <Image source={NewHabit} style={styles.modalLogo} />
-
                 <TouchableOpacity onPress={dailyModalToggle}>
                   <Ionicons
                     style={{ margin: 16 }}
@@ -230,9 +294,26 @@ export default function HomeScreen({ navigation }) {
                 </TouchableOpacity>
               </View>
               <View style={styles.modalContBuddies}>
+                <View>
+                  <Text style={styles.habitTitle}>Habit Goal</Text>
+                  <TextInput
+                    autoCapitalize="none"
+                    placeholder="Type Here"
+                    placeholderTextColor={"grey"}
+                    selectionColor={"#48b6db"}
+                    style={styles.habitInput}
+                    onChangeText={(val) => habitGoalChange(val)}
+                  />
+                </View>
+
                 <View style={styles.modalBtn}>
                   <Text>Buddies</Text>
                 </View>
+                <FlatList
+                  data={buddies}
+                  renderItem={buddyItem}
+                  keyExtractor={(item) => item._id}
+                />
                 <View style={styles.modalBtn}>
                   <Text>Start</Text>
                 </View>
@@ -372,11 +453,37 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  modalImg: {},
   modalContBuddies: {
     flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
     marginVertical: 15,
+  },
+  habitInput: {
+    color: "white",
+    fontSize: 25,
+    marginTop: 0,
+    color: "#FFF",
+  },
+  habitTitle: {
+    fontSize: 25,
+    color: "#FFF",
+    marginBottom: 20,
+  },
+  buddyItem: {
+    color: "#FFF",
+    fontSize: 20,
+  },
+  buddyItemCont: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: width * 0.75,
+    height: 40,
+    marginTop: 15,
+  },
+  row: {
+    flex: 1,
+    flexDirection: "row",
   },
 });

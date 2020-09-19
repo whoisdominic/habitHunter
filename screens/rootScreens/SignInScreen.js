@@ -27,7 +27,7 @@ import Axios from "axios";
 import BackGraphic from "../../assets/habithunterauth.png";
 import WelcomeImage from "../../assets/images/habithunterWelcome.png";
 import AsyncStorage from "@react-native-community/async-storage";
-import { AuthContext } from "../../components/context.js";
+import { AuthContext } from "../../components/authContext.js";
 /// Api
 const APIURL = ["https://habithunter.herokuapp.com", "http://localhost:8000"];
 

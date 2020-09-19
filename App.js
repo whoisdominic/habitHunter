@@ -7,11 +7,9 @@ import RootStackScreen from "./screens/RootStackScreen.js";
 //  Main Stack
 import MainStackScreen from "./screens/MainStackScreen.js";
 // Context
-import { AuthContext } from "./components/context.js";
+import { AuthContext } from "./components/authContext.js";
 // Local Storage
 import AsyncStorage from "@react-native-community/async-storage";
-// Constants
-const authSetup = false;
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -54,7 +52,7 @@ function App() {
     setTimeout(() => {
       setIsLoading(false);
       setUserToken(getData());
-    }, 1500);
+    }, 1200);
   }, []);
 
   if (isLoading) {
